@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Cerchio esterno -->
+    <path
+        android:pathData="M24,4 A20,20 0 1,0 24,44 A20,20 0 1,0 24,4 Z"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000" />
+
+    <!-- Croce orizzontale -->
+    <path
+        android:pathData="M10,24 L18,24 M30,24 L38,24"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000" />
+
+    <!-- Croce verticale -->
+    <path
+        android:pathData="M24,10 L24,18 M24,30 L24,38"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000" />
+
+    <!-- Punto centrale -->
+    <path
+        android:pathData="M22,24 A2,2 0 1,0 26,24 A2,2 0 1,0 22,24 Z"
+        android:fillColor="#FFFFFF" />
+
+</vector>

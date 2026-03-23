@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- GPS — richiesto per modalità Outdoor -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature android:name="android.hardware.camera.ar" android:required="true" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+    <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true" />
+    <!-- Depth API: opzionale — funziona anche senza sensore ToF fisico (ML depth estimation) -->
+    <uses-feature android:name="com.google.ar.core.depth" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ARProto">
+
+        <!-- AdMob App ID — sostituisci con il tuo ID reale da AdMob Console -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${admobAppId}"/>
+        <meta-data android:name="com.google.ar.core" android:value="required" tools:replace="android:value"/>
+
+        <!--
+            ARCore Cloud Anchors RIMOSSI — sostituiti da LocalAnchorStore.
+            Nessuna API key necessaria. La persistenza degli anchor è locale,
+            gratuita e illimitata. Vedi LocalAnchorStore.kt per i dettagli.
+        -->
+
+        <!-- LAUNCHER: Splash -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ARProto.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".LoginActivity"
+            android:exported="false" android:screenOrientation="portrait"
+            android:theme="@style/Theme.ARProto.Fullscreen"/>
+
+        <activity android:name=".OutdoorArCatchActivity"
+            android:exported="false" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        <activity android:name=".HomeActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".PlayersSetupActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".SettingsActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".StatsActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ShopActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".LegalActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".HelpActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity android:name=".EggSetupModeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GameModeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SaveSlotActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <!--
+            OSMDroid (OpenStreetMap) — nessuna API Key richiesta.
+            I tile sono scaricati da tile.openstreetmap.org (gratuito, open-source).
+            Rispetta la tile usage policy OSM: https://operations.osmfoundation.org/policies/tiles/
+        -->
+
+        <activity android:name=".OutdoorModeActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".OutdoorGuestActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".OutdoorSetupActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".OutdoorHuntActivity"
+            android:exported="false" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity android:name=".OutdoorWorldActivity"
+            android:exported="false" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity android:name=".PlayerProfileActivity"
+            android:exported="false" android:screenOrientation="portrait"/>
+
+        <activity android:name=".MultiplayerLobbyActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+    </application>
+</manifest>

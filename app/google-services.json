@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "418980419674",
+    "firebase_url": "https://easter-egg-hunt-ar-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "easter-egg-hunt-ar",
+    "storage_bucket": "easter-egg-hunt-ar.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418980419674:android:ca82ffa3fe2fb553f3e063",
+        "android_client_info": {
+          "package_name": "com.intelligame.easteregghuntar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418980419674-bk4oi64s11efp837skobnr9nmnpj7fqb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intelligame.easteregghuntar",
+            "certificate_hash": "d8a6cedce3c3a1c4130974b938ad9ec6dfbffe93"
+          }
+        },
+        {
+          "client_id": "418980419674-mq5d7a5jmbpujj4gfpitngobjcg17km5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUghQDddae_P_OFCHVqPCZO8I4q-JJhYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418980419674-mq5d7a5jmbpujj4gfpitngobjcg17km5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Easter Egg Hunt AR — Trailer</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; overflow:hidden; font-family:'Segoe UI',sans-serif; width:1920px; height:1080px; }
+
+#stage {
+  position:relative; width:1920px; height:1080px; overflow:hidden;
+  background: radial-gradient(ellipse at 30% 40%, #1a0040 0%, #080E24 50%, #001820 100%);
+}
+
+.star {
+  position:absolute; border-radius:50%; background:white; opacity:0;
+  animation: twinkle linear infinite;
+}
+@keyframes twinkle {
+  0%,100%{opacity:0.1} 50%{opacity:0.9}
+}
+
+.scene { position:absolute; inset:0; opacity:0; transition:opacity 0.8s; display:flex; align-items:center; justify-content:center; }
+.scene.active { opacity:1; }
+
+/* Scene 1: Title intro */
+#s1 { flex-direction:column; text-align:center; }
+#s1 .egg-giant {
+  font-size:200px; line-height:1;
+  animation: eggBounce 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px #FF4488) drop-shadow(0 0 80px #FFD700);
+}
+@keyframes eggBounce {
+  0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.05)}
+}
+.title-main {
+  font-size:90px; font-weight:900; color:#FFD700; letter-spacing:2px;
+  text-shadow: 0 0 40px #FFD700, 0 4px 0 #AA8800;
+  animation: titleAppear 1s ease-out forwards;
+}
+.title-sub {
+  font-size:34px; color:#AAD4FF; margin-top:12px;
+  animation: titleAppear 1s 0.4s ease-out both;
+}
+@keyframes titleAppear {
+  from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)}
+}
+
+/* Floating eggs */
+.egg-float {
+  position:absolute;
+  font-size:52px;
+  animation: floatUp linear forwards;
+  filter: drop-shadow(0 0 12px currentColor);
+}
+@keyframes floatUp {
+  0%{opacity:0;transform:translateY(200px) rotate(0deg)}
+  10%{opacity:1}
+  90%{opacity:0.8}
+  100%{opacity:0;transform:translateY(-300px) rotate(360deg)}
+}
+
+/* Phone mockup */
+.phone {
+  width:280px; height:520px; border-radius:34px;
+  border:3px solid rgba(255,215,0,0.6);
+  background:linear-gradient(160deg,#0d1b3f,#050e1c);
+  position:relative; overflow:hidden;
+  box-shadow: 0 0 40px rgba(255,215,0,0.3), 0 20px 60px rgba(0,0,0,0.8);
+}
+.phone-screen {
+  position:absolute; inset:8px 8px 8px 8px;
+  border-radius:26px; overflow:hidden;
+}
+.phone-notch {
+  position:absolute; top:10px; left:50%; transform:translateX(-50%);
+  width:80px; height:18px; background:#05091a; border-radius:10px; z-index:10;
+}
+
+/* AR overlay style */
+.ar-screen {
+  background: linear-gradient(135deg, #010810 0%, #020f1a 100%);
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; position:relative;
+}
+.ar-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(0,200,100,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,100,0.08) 1px, transparent 1px);
+  background-size:30px 30px;
+}
+.ar-egg {
+  font-size:80px;
+  animation: arEggFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px #FF4488) drop-shadow(0 0 40px #FFD700);
+  z-index:2;
+}
+@keyframes arEggFloat {
+  0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-15px) scale(1.08)}
+}
+.ar-ring {
+  position:absolute; border-radius:50%;
+  border:3px solid rgba(255,50,120,0.6);
+  animation:ringPulse 2s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%,100%{transform:scale(0.9);opacity:0.4} 50%{transform:scale(1.1);opacity:1}
+}
+.ar-hud-top {
+  position:absolute; top:6px; left:6px; right:6px;
+  background:rgba(0,0,0,0.7); border-radius:8px;
+  padding:4px 8px; font-size:11px; color:rgba(100,220,100,0.9);
+}
+.ar-badge {
+  position:absolute; bottom:30px;
+  background:rgba(232,51,109,0.9); color:white;
+  border-radius:16px; padding:4px 12px; font-size:12px; font-weight:bold;
+  animation: badgePop 0.5s ease-out;
+}
+@keyframes badgePop {
+  from{transform:scale(0)} to{transform:scale(1)}
+}
+
+/* Map screen */
+.map-screen {
+  background:#061a0e; width:100%; height:100%;
+  position:relative; overflow:hidden;
+}
+.map-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(20,60,35,0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,60,35,0.8) 1px, transparent 1px);
+  background-size:22px 22px;
+}
+.map-road-h { position:absolute; background:rgba(25,60,40,0.9); height:12px; left:0; right:0; }
+.map-road-v { position:absolute; background:rgba(25,60,40,0.9); width:9px; top:0; bottom:0; }
+.player-dot {
+  position:absolute; width:28px; height:28px; border-radius:50%;
+  background:radial-gradient(#a0d0ff,#2060cc);
+  border:2px solid #6090ee;
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  box-shadow:0 0 20px rgba(80,150,255,0.8);
+  animation:playerPulse 2s ease-in-out infinite;
+}
+@keyframes playerPulse { 0%,100%{box-shadow:0 0 20px rgba(80,150,255,0.8)} 50%{box-shadow:0 0 40px rgba(80,150,255,1)} }
+.action-circle {
+  position:absolute;
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  width:160px; height:160px; border-radius:50%;
+  border:2px solid rgba(0,200,100,0.5);
+  background:rgba(0,200,100,0.06);
+}
+.map-egg {
+  position:absolute; font-size:20px;
+  animation: mapEggPop 0.4s ease-out;
+  filter:drop-shadow(0 0 8px currentColor);
+}
+@keyframes mapEggPop { from{transform:scale(0)} to{transform:scale(1)} }
+
+/* Catch screen */
+.catch-screen {
+  background:linear-gradient(180deg,#020812,#011208);
+  width:100%; height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; position:relative;
+}
+.catch-ring {
+  position:absolute; border-radius:50%;
+  border:4px solid rgba(255,50,120,0.7);
+  animation:catchRingPulse 1.5s ease-in-out infinite;
+}
+@keyframes catchRingPulse {
+  0%,100%{transform:scale(0.85);opacity:0.4} 50%{transform:scale(1.1);opacity:1}
+}
+.catch-egg {
+  font-size:72px; z-index:2;
+  animation:catchEggBounce 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 25px rgba(255,50,120,0.8));
+}
+@keyframes catchEggBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+.basket {
+  font-size:44px; position:absolute; bottom:80px;
+  animation:basketFloat 3s ease-in-out infinite;
+}
+@keyframes basketFloat { 0%,100%{transform:translateX(0)} 50%{transform:translateX(20px)} }
+.swipe-hint {
+  position:absolute; bottom:130px; color:rgba(180,220,255,0.8);
+  font-size:14px; animation:hintPulse 2s ease-in-out infinite;
+}
+@keyframes hintPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+/* Leaderboard screen */
+.lb-screen {
+  background:linear-gradient(160deg,#050818,#080f30);
+  width:100%; height:100%; padding:10px;
+  display:flex; flex-direction:column;
+}
+.lb-title { color:#FFD700; font-size:14px; font-weight:bold; text-align:center; margin-bottom:6px; }
+.lb-row {
+  display:flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,0.06); border-radius:8px;
+  padding:4px 8px; margin-bottom:4px;
+  animation:slideIn 0.4s ease-out;
+}
+@keyframes slideIn { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
+.lb-medal { font-size:16px; }
+.lb-name { color:white; font-size:11px; font-weight:bold; flex:1; }
+.lb-xp { color:#FFD700; font-size:10px; }
+
+/* Scene 2: Features showcase */
+#s2 { gap:60px; }
+.feature-card {
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,215,0,0.3);
+  border-radius:28px; padding:40px 36px;
+  width:380px; text-align:center;
+  transform:translateY(60px); opacity:0;
+  transition:all 0.6s ease-out;
+  backdrop-filter:blur(10px);
+}
+.feature-card.visible {
+  transform:translateY(0); opacity:1;
+}
+.feature-icon { font-size:70px; margin-bottom:16px; }
+.feature-title { color:#FFD700; font-size:26px; font-weight:800; margin-bottom:12px; }
+.feature-desc { color:rgba(200,225,255,0.85); font-size:18px; line-height:1.6; }
+
+/* Scene 3: Demo phones */
+#s3 { gap:80px; align-items:center; }
+
+/* CTA Scene */
+#s4 { flex-direction:column; text-align:center; gap:20px; }
+.cta-title { font-size:80px; font-weight:900; color:#FFD700;
+  text-shadow:0 0 60px rgba(255,215,0,0.5); }
+.cta-sub { font-size:32px; color:rgba(200,230,255,0.9); }
+.cta-btn {
+  background:linear-gradient(135deg,#FFD700,#FF8C00);
+  color:#0a0f20; font-size:28px; font-weight:900;
+  padding:20px 60px; border-radius:50px;
+  box-shadow:0 8px 40px rgba(255,215,0,0.4);
+  animation:btnPulse 2s ease-in-out infinite;
+  display:inline-block;
+}
+@keyframes btnPulse {
+  0%,100%{transform:scale(1);box-shadow:0 8px 40px rgba(255,215,0,0.4)}
+  50%{transform:scale(1.04);box-shadow:0 8px 60px rgba(255,215,0,0.7)}
+}
+.rating { font-size:40px; color:#FFD700; }
+.rating span { color:rgba(220,230,255,0.8); font-size:24px; }
+
+/* Progress bar */
+#progress {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  display:flex; gap:10px; z-index:100;
+}
+.progress-dot {
+  width:12px; height:12px; border-radius:6px;
+  background:rgba(255,255,255,0.3); transition:all 0.3s;
+}
+.progress-dot.active { background:#FFD700; width:32px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- Stars will be injected by JS -->
+
+  <!-- Scene 1: Title Intro -->
+  <div class="scene active" id="s1">
+    <div class="egg-giant">🐣</div>
+    <div class="title-main">Easter Egg Hunt AR</div>
+    <div class="title-sub">La caccia alle uova definitiva — in Realtà Aumentata</div>
+  </div>
+
+  <!-- Scene 2: Features -->
+  <div class="scene" id="s2">
+    <div class="feature-card" id="fc1">
+      <div class="feature-icon">🏠</div>
+      <div class="feature-title">AR Indoor</div>
+      <div class="feature-desc">Piazza le uova in casa usando la Realtà Aumentata. La cassaforte custodisce i tesori nascosti!</div>
+    </div>
+    <div class="feature-card" id="fc2">
+      <div class="feature-icon">🌍</div>
+      <div class="feature-title">Mondo Aperto GPS</div>
+      <div class="feature-desc">Esplora il mondo reale. Uova rare e leggendarie ti aspettano ovunque con GPS di precisione!</div>
+    </div>
+    <div class="feature-card" id="fc3">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-title">Multiplayer & Classifica</div>
+      <div class="feature-desc">Sfida amici e giocatori di tutto il mondo. Scala la classifica globale e diventa il campione!</div>
+    </div>
+  </div>
+
+  <!-- Scene 3: Phone demos -->
+  <div class="scene" id="s3">
+    <!-- Phone 1: AR Indoor -->
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="ar-screen">
+          <div class="ar-grid"></div>
+          <div class="ar-hud-top">🏠 AR MODE · Piano rilevato · UOVO #3</div>
+          <div class="ar-ring" style="width:200px;height:200px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+          <div class="ar-ring" style="width:150px;height:150px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:0.5s"></div>
+          <div class="ar-egg">🥚</div>
+          <div class="ar-badge">⭐ EPICO · +800 XP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone 2: Outdoor Map -->
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="map-screen">
+          <div class="map-grid"></div>
+          <div class="map-road-h" style="top:50%"></div>
+          <div class="map-road-h" style="top:33%"></div>
+          <div class="map-road-v" style="left:40%"></div>
+          <div class="map-road-v" style="left:65%"></div>
+          <div class="action-circle"></div>
+          <div class="player-dot"></div>
+          <div class="map-egg" style="top:28%;left:30%;color:#E8336D">🥚</div>
+          <div class="map-egg" style="top:35%;left:65%;color:#FFD700">🥚</div>
+          <div class="map-egg" style="top:62%;left:45%;color:#8A2BE2">🥚</div>
+          <div class="map-egg" style="top:58%;left:72%;color:#00B894">🥚</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone 3: Catch basket -->
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="catch-screen">
+          <div class="catch-ring" style="width:180px;height:180px;top:50%;left:50%;transform:translate(-50%,-65%)"></div>
+          <div class="catch-ring" style="width:130px;height:130px;top:50%;left:50%;transform:translate(-50%,-65%);animation-delay:0.7s"></div>
+          <div class="catch-egg">🥚</div>
+          <div style="position:absolute;top:63%;color:#E8336D;font-size:11px;font-weight:bold;background:rgba(232,51,109,0.85);border-radius:12px;padding:3px 10px;">💎 LEGGENDARIO</div>
+          <div class="basket">🧺</div>
+          <div class="swipe-hint">↑ Scorri per lanciare</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone 4: Leaderboard -->
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="lb-screen">
+          <div class="lb-title">🏆 Classifica Mondiale</div>
+          <div class="lb-row" style="animation-delay:0.1s;background:rgba(255,215,0,0.12)">
+            <span class="lb-medal">🥇</span>
+            <span class="lb-name">Giulia</span>
+            <span class="lb-xp">4,200 XP · ⚡8.9K</span>
+          </div>
+          <div class="lb-row" style="animation-delay:0.2s;background:rgba(100,150,255,0.15);border:1px solid rgba(100,150,255,0.3)">
+            <span class="lb-medal">🥈</span>
+            <span class="lb-name" style="color:#90b8ff">Marco ← Tu</span>
+            <span class="lb-xp">3,850 XP · ⚡7.2K</span>
+          </div>
+          <div class="lb-row" style="animation-delay:0.3s">
+            <span class="lb-medal">🥉</span>
+            <span class="lb-name">Sofia</span>
+            <span class="lb-xp">3,200 XP · ⚡6.1K</span>
+          </div>
+          <div class="lb-row" style="animation-delay:0.4s">
+            <span class="lb-medal">👤</span>
+            <span class="lb-name">Luca</span>
+            <span class="lb-xp">2,900 XP · ⚡5.4K</span>
+          </div>
+          <div class="lb-row" style="animation-delay:0.5s">
+            <span class="lb-medal">👤</span>
+            <span class="lb-name">Emma</span>
+            <span class="lb-xp">2,750 XP · ⚡4.9K</span>
+          </div>
+          <div style="margin-top:auto;text-align:center;color:rgba(255,215,0,0.7);font-size:10px;padding-top:6px;">
+            ⚡ 2,450 XP  •  Lv.8  •  #3 Mondiale
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 4: CTA -->
+  <div class="scene" id="s4">
+    <div class="egg-giant" style="font-size:120px">🐣🌍🏆</div>
+    <div class="cta-title">Scarica Gratis!</div>
+    <div class="cta-sub">Disponibile su Google Play · Gratis · Per tutti</div>
+    <div class="cta-btn">▶ Inizia la Caccia!</div>
+    <div class="rating">⭐⭐⭐⭐⭐ <span>4.8/5 — "Incredibile!" · "Finalmente qualcosa di nuovo!"</span></div>
+  </div>
+
+  <!-- Progress dots -->
+  <div id="progress">
+    <div class="progress-dot active" id="pd0"></div>
+    <div class="progress-dot" id="pd1"></div>
+    <div class="progress-dot" id="pd2"></div>
+    <div class="progress-dot" id="pd3"></div>
+  </div>
+</div>
+
+<script>
+// Generate stars
+const stage = document.getElementById('stage');
+for(let i=0;i<200;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const size=Math.random()<0.7?1:Math.random()<0.7?2:3;
+  s.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*60}%;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
+  stage.appendChild(s);
+}
+
+// Floating eggs
+const eggEmojis=['🥚','🐣','🐥','🌸','✨','🌼','🦋'];
+const eggColors=['#E8336D','#FFD700','#8A2BE2','#00B894','#FF6B35'];
+function spawnEgg(){
+  const e=document.createElement('div');
+  e.className='egg-float';
+  e.textContent=eggEmojis[Math.floor(Math.random()*eggEmojis.length)];
+  e.style.cssText=`left:${Math.random()*100}%;bottom:0;color:${eggColors[Math.floor(Math.random()*eggColors.length)]};animation-duration:${4+Math.random()*4}s;font-size:${36+Math.random()*40}px`;
+  stage.appendChild(e);
+  setTimeout(()=>e.remove(),8000);
+}
+setInterval(spawnEgg,600);
+
+// Scene management
+const scenes=['s1','s2','s3','s4'];
+let current=0;
+
+function showScene(idx){
+  scenes.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.toggle('active',i===idx);
+  });
+  // Update progress
+  for(let i=0;i<4;i++){
+    const pd=document.getElementById('pd'+i);
+    pd.classList.toggle('active',i===idx);
+  }
+  // Scene-specific animations
+  if(idx===1){
+    setTimeout(()=>document.getElementById('fc1').classList.add('visible'),200);
+    setTimeout(()=>document.getElementById('fc2').classList.add('visible'),500);
+    setTimeout(()=>document.getElementById('fc3').classList.add('visible'),800);
+  }
+  current=idx;
+}
+
+setInterval(()=>{
+  const next=(current+1)%scenes.length;
+  showScene(next);
+},4500);
+
+// Click to advance
+stage.addEventListener('click',()=>{
+  showScene((current+1)%scenes.length);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# ─── Credenziali firma — MAI su Git ──────────────────────────────
+keystore.properties
+*.jks
+*.keystore
+
+# ─── Build outputs ───────────────────────────────────────────────
+/build
+/app/build
+*.apk
+*.aab
+
+# ─── Android Studio / IDE ────────────────────────────────────────
+/.idea
+*.iml
+.DS_Store
+/local.properties
+
+# ─── Gradle cache ────────────────────────────────────────────────
+.gradle/
+gradle-app.setting
+
+# ─── Firebase — usa il tuo google-services.json reale localmente
+# (NON escluderlo se vuoi che la CI lo usi — oppure iniettalo tramite secret)
+# app/google-services.json
